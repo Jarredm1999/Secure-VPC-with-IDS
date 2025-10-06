@@ -21,7 +21,7 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
 - Configured public (10.0.1.0/24) and private (10.0.2.0/24) subnets.
 - Deployed Internet Gateway for public subnet connectivity.
 - Created and configured public route table, that routes traffic to the internet gateway.
-  ![public-route-table](link to pic)
+  ![public-route-table](./pictures/inital-public-route-table.png)
 - Created and configured private route table. 
 ![vpc-diagram-after-creating-subnets](link to pic)
 
@@ -29,29 +29,29 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
 - Launched an EC2 instance with Amazon Linux 2023 AMI in the public subnet.
 - Configured key based SSH access.
 - Updated bastion host security group to allow inbound SSH from my local ip.
-  ![bastion-sg](link to pic)
+  ![bastion-sg](./pictures/bastion-sg.png)
 - Verified connectivity with local machine via SSH.
    - Used this ssh command:```ssh -i "C:\Users\jarre\Downloads\key.pem" ec2-user@<Bastion_Public_IP>```
-   ![sucessful-ssh-connection](link to pic)
+   ![sucessful-ssh-connection](./pictures/sucessful-ssh-connection-bastion.png)
 
 ### Part 3: Private App Server Deployment
 - Launched an EC2 instance with Amazon Linux 2023 AMI in the private subnet.
 - Configured Private App Server security group to allow inbound SSH from Bastion Host SG.
-  ![private-app-server-sg](link to pic)
+  ![private-app-server-sg](./pictures/private-app-server-sg.png)
 - Since I used the same key pair for this EC2 as the Bastion Host, I need to copy the private key to this machine.
   - Used this command:```scp -i "C:\Users\jarre\Downloads\key.pem" C:\Users\jarre\Downloads\ey.pem ec2-user@<Bastion_Public_IP>:~/```
 - Verified connectivity with Bastion Host.
   - Used this ssh command:```ssh -i ~/key.pem ec2-user@<Private_App_Server_Private_IP>```
-  ![successful-ssh-private-connection](link to pic)
+  ![successful-ssh-private-connection](./pictures/sucessful-ssh-private-connection.png)
 
 ### Part 4: Configure NAT Gateway 
 - Deployed NAT Gateway in public subnet for outbound internet acces from private subnet.
 - Allocated Elastic IP to to NAT Gateway.
 - Updated private route table to route outbound traffic through NAT Gateway.
-![private-route-table-rule](link to pic)
+![private-route-table-rule](./pictures/private-route-table-rule.png)
 - Verified outboud connectivity from the Private App Server.
   - Used this ping command: ```ping -c 3 google.com```
-  ![private-app-server-ping-result](link to pic)
+  ![private-app-server-ping-result](./pictures/private-app-server-ping-result.png)
 
 ### Part 5: Configure Network ACLs
 - Create Public and Private subnet NACLs and associate them with the correct subnet.
@@ -59,24 +59,25 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
     - Allow inbound SSH traffic from my local ip.
     - Allow inbound HTTP/HTTPS traffic from any ip.
     - Allow any inbound traffic from private subnet CIDR.
+    ![public-subnet-nacl-inbound-rules](./pictures/public-subnet-nacl-inbound-rules.png)
     - Allow all outbound traffic.
-    ![public-subnet-nacl-inbound-rules](link to pic)
-    ![public-subnet-nacl-outbound-rules](link to pic)
+    ![public-subnet-nacl-outbound-rules](./pictures/public-subnet-nacl-outbound-rules.png)
 - PrivateSubnet-NACL:
     - Allow inbound SSH traffic from public subnet CIDR.
     - Allow inbound HTTP traffic from public subnet CIDR.
     - Allow inbound ICMP traffic from any ip.
+    ![private-subnet-nacl-inbound-rules](/pictures/private-subnet-nacl-inbound-rules.png)
     - Allow outbound traffic from ephemeral ports 1024-65535.
     - Allow outbound ICMP traffic from any ip.
-    ![private-subnet-nacl-inbound-rules](link to pic)
-    ![private-subnet-nacl-outbound-rules](link to pic)
+    ![private-subnet-nacl-outbound-rules](./pictures/private-subnet-nacl-outbound-rules.png)
 
 ### Part 6: Enable GuardDuty
 - Create Flow Log and confiure it to accept all traffic.
 - Create new VPC-Flow-Logs, log group.
 - Enable Amazon GuardDuty.
 - After ~10-15 min. findings should be visible in the GuardDuty findings tab.
-![guard-duty-findings-tab](link to pic)
+
+![guard-duty-findings-tab](./pictures/guard-duty-findings.png)
 
 ### Part 7: Configure CloudWatch/Metrics
 - Send Flow Logs to CloudWatch logs.
@@ -89,7 +90,8 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
      - Metric Filter Pattern:```[version, account, interface, srcaddr, dstaddr, srcport, dstport, protocol, packets>1000, bytes, start, end, action="ACCEPT", status]```
   - ICMP Activity: Monitor unexpected ping traffic.
      - Metric Filter Pattern:```[version, account, interface, srcaddr, dstaddr, srcport, dstport, protocol=1, packets, bytes, start, end, action="ACCEPT", status]```
-![metrics-dashboard](link to pic)
+
+![metrics-dashboard](./pictures/metrics-dashboard.png)
 
 ### Part 8: Create CloudWatch Alarms
 - Configure CloudWatch Alarms on each custom metric.
@@ -99,7 +101,8 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
   - Pinging private server.
   - Connecting to blocked ports.
 - To test the alarm works, I tried to ssh into the bastion host using the wrong key an excessive amoutn of times. I received this email alert ~5 min. later.
-![example-alarm](link to pic)
+
+![example-alarm](/pictures/example-alarm.png)
 
 ## Lab Outcome
 - Successfully deplyed multi-tier AWS network with secure internal and external connectivity.
