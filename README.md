@@ -18,7 +18,7 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
 
 ### Part 1: VPC and Subnet Configuration
 - Created a VPC with CIDR ```10.0.0.0/16```.
-- Configured public (10.0.1.0/24) and private (10.0.2.0/24) subnets.
+- Configured public (```10.0.1.0/24```) and private (```10.0.2.0/24```) subnets.
 - Deployed Internet Gateway for public subnet connectivity.
 - Created and configured public route table, that routes traffic to the internet gateway.
   <img alt="public-route-table" width=100% src="./pictures/inital-public-route-table.png"/>
