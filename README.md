@@ -71,7 +71,7 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
     - Allow outbound ICMP traffic from any ip.
     ![private-subnet-nacl-outbound-rules](./pictures/private-subnet-nacl-outbound-rules.png)
 
-### Part 6: Enable GuardDuty
+### Part 6: Create FlowLogs and Enable GuardDuty
 - Create Flow Log and confiure it to accept all traffic.
 - Create new VPC-Flow-Logs, log group.
 - Enable Amazon GuardDuty.
