@@ -4,7 +4,7 @@
 This lab demonstrates the deployment and configuration of a secure, multi-tier AWS network architecture with an integration intrusion detection system (IDS). The primary goal was to build hands on experience in AWS networking, security groups, network ACLs, bastion host configuration, VPC Flow Logs, and CloudWatch monitoring, while showcasing practical cloud security skills relevant for cloud engineering and cybersecurity roles.
 
 ### Lab Architecture
-![final-vpc-diagram](link to pic)
+![final-vpc-diagram](./pictures/AWS%20Secure%20Network%20+%20IDS.drawio.png)
 
 - VPC with public and private subnets.
 - Bastion Host in public subnet for secure SSH access to private instances.
@@ -70,6 +70,8 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
     - Allow outbound traffic from ephemeral ports 1024-65535.
     - Allow outbound ICMP traffic from any ip.
     ![private-subnet-nacl-outbound-rules](./pictures/private-subnet-nacl-outbound-rules.png)
+- This is what the total VPC diagram looks like at this moment.
+<img alt="vpc-after-nacl" width=75% src="./pictures/VPC.drawio.png"/>
 
 ### Part 6: Create FlowLogs and Enable GuardDuty
 - Create Flow Log and confiure it to accept all traffic.
