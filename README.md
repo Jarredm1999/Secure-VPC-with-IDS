@@ -3,6 +3,13 @@
 ## Summary
 This lab demonstrates the deployment and configuration of a secure, multi-tier AWS network architecture with an integration intrusion detection system (IDS). The primary goal was to build hands on experience in AWS networking, security groups, network ACLs, bastion host configuration, VPC Flow Logs, and CloudWatch monitoring, while showcasing practical cloud security skills relevant for cloud engineering and cybersecurity roles.
 
+## Skills Demonstrated
+- ☁️ **Cloud Architecture**: Multi-tier VPC design with public/private subnet segmentation
+- 🔒 **Security**: Defense-in-depth with Security Groups, NACLs, and bastion host hardening
+- 📊 **Monitoring**: CloudWatch metrics, alarms, and log analysis
+- 🚨 **Threat Detection**: GuardDuty integration and custom IDS implementation
+- 🔧 **Troubleshooting**: Log analysis and security event correlation
+
 ### Lab Architecture
 ![final-vpc-diagram](./pictures/AWS%20Secure%20Network%20+%20IDS.drawio.png)
 
@@ -23,7 +30,6 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
 - Created and configured public route table, that routes traffic to the internet gateway.
   <img alt="public-route-table" width=100% src="./pictures/inital-public-route-table.png"/>
 - Created and configured private route table. 
-![vpc-diagram-after-creating-subnets](link to pic)
 
 ### Part 2: Bastion Host Deployment
 - Launched an EC2 instance with Amazon Linux 2023 AMI in the public subnet.
@@ -84,14 +90,18 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
 ### Part 7: Configure CloudWatch/Metrics
 - Send Flow Logs to CloudWatch logs.
 - Created Metrics Filters:
-  - Rejected Traffic (Deny Events): Which detects blocked inbound/outbound connections.
+  - Rejected Traffic (Deny Events):
      - Metric Filter Pattern:```[version, account, interface, srcaddr, dstaddr, srcport, dstport, protocol, packets, bytes, start, end, action="REJECT", status]```
-  - SSH Attempts from Unapporved Sources: Flags external SSH attmepts(SSH attempts outside of Bastion).
+     - **Purpose:** Detecs blocked inbound/outbound connections 
+  - SSH Attempts from Unapporved Sources: 
      - Metric Filter Pattern:```[version, account, interface, srcaddr, dstaddr, srcport, dstport=22, protocol=6, packets, bytes, start, end, action="ACCEPT", status]```
-  - High Traffic Volume: Detect potential exfiltration of scanning.
+     - **Purpose:** Flags external SSH attempts(SSH attempts outside of Bastion)
+  - High Traffic Volume:
      - Metric Filter Pattern:```[version, account, interface, srcaddr, dstaddr, srcport, dstport, protocol, packets>1000, bytes, start, end, action="ACCEPT", status]```
-  - ICMP Activity: Monitor unexpected ping traffic.
+     - **Purpose:** Detects potential exfiltration or scanning.
+  - ICMP Activity: 
      - Metric Filter Pattern:```[version, account, interface, srcaddr, dstaddr, srcport, dstport, protocol=1, packets, bytes, start, end, action="ACCEPT", status]```
+     - **Purpose:** Monitors unexpected ping traffic (ping flood).
 
 ![metrics-dashboard](./pictures/metrics-dashboard.png)
 
@@ -110,12 +120,6 @@ This lab demonstrates the deployment and configuration of a secure, multi-tier A
 - Successfully deplyed multi-tier AWS network with secure internal and external connectivity.
 - Implemented intrusion detection capabilities using flow logs, metric filters, and CloudWatch alarms.
 - Validated the effectivness of security controls by testing diffrent attack vectors in a controlled environment.
-### Key Skills Highlighted
-- AWS VPC, EC2, Security Groups, NACLs, NAT Gateway
-- CloudWatch Metrics & Alarms
-- Network security monitoring and IDS implementation
-- SSH & Bastion Host configuration
-- Hands on logging and troubleshooting in AWS
 
 
 
